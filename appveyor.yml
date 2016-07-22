@@ -12,8 +12,9 @@
   before_build:
     - dotnet --info
     - dotnet restore
+    - ps: $env:VERSION_SUFFIX = 'build' + "$env:APPVEYOR_BUILD_NUMBER".PadLeft(5, "0")
   build_script:
-    - dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts --version-suffix build$env:APPVEYOR_BUILD_NUMBER
+    - dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts --version-suffix $env:VERSION_SUFFIX
   test_script:
     - dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
   artifacts:
