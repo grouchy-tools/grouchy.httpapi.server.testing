@@ -4,11 +4,11 @@ skip_tags: true
 clone_depth: 1
 cache: C:\Users\appveyor\.nuget\packages
 before_build:
-- ps: dotnet restore
-after_build:
-- dotnet pack src\Banshee\project.json --no-build -c Release
+- dotnet restore
+build:
+- dotnet pack src\Banshee\project.json -c Release -o artifacts
 test_script:
-- dotnet test src\Banshee.Tests\project.json --no-build -c Release
+- dotnet test src\Banshee.Tests\project.json -c Release
 artifacts:
 - path: '**\*.nupkg'
 - path: ConsoleOut.log
