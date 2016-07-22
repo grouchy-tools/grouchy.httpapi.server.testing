@@ -1,15 +1,44 @@
-version: 0.0.{build}
-configuration: Release
-skip_tags: true
-clone_depth: 1
-cache: C:\Users\appveyor\.nuget\packages
-before_build:
-- dotnet restore
-build_script:
-- dotnet pack src\Banshee\project.json -c Release -o artifacts
-test_script:
-- dotnet test src\Banshee.Tests\project.json -c Release
-artifacts:
-- path: '**\*.nupkg'
-- path: ConsoleOut.log
-- path: ConsoleError.log
+-
+  branches:
+    except:
+      - stable
+  version: {branch}-build{build}
+  skip_tags: true
+  clone_depth: 1
+  cache: C:\Users\appveyor\.nuget\packages
+  configuration:
+    - Debug
+    - Release
+  before_build:
+    - dotnet --info
+    - dotnet restore
+  build_script:
+    - dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts --version-suffix build$env:APPVEYOR_BUILD_NUMBER
+  test_script:
+    - dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
+  artifacts:
+    - path: 'artifacts\*.nupkg'
+  deploy:
+    provider: NuGet
+    on:
+      configuration: Debug
+-
+  branches:
+    only:
+      - stable
+  version: {branch}-build{build}
+  skip_tags: true
+  clone_depth: 1
+  cache: C:\Users\appveyor\.nuget\packages
+  configuration: Release
+  before_build:
+    - dotnet --info
+    - dotnet restore
+  build_script:
+    - dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts
+  test_script:
+    - dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
+  artifacts:
+    - path: 'artifacts\*.nupkg'
+  deploy:
+    provider: NuGet
