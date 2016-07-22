@@ -5,7 +5,7 @@ clone_depth: 1
 cache: C:\Users\appveyor\.nuget\packages
 before_build:
 - dotnet restore
-build:
+build_script:
 - dotnet pack src\Banshee\project.json -c Release -o artifacts
 test_script:
 - dotnet test src\Banshee.Tests\project.json -c Release
