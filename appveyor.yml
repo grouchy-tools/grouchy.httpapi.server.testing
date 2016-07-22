@@ -10,13 +10,13 @@
     - Debug
     - Release
   before_build:
-    - dotnet --info
-    - dotnet restore
+    - ps: dotnet --info
+    - ps: dotnet restore
     - ps: $env:VERSION_SUFFIX = 'build' + "$env:APPVEYOR_BUILD_NUMBER".PadLeft(5, "0")
   build_script:
-    - dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts --version-suffix $env:VERSION_SUFFIX
+    - ps: dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts --version-suffix $env:VERSION_SUFFIX
   test_script:
-    - dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
+    - ps: dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
   artifacts:
     - path: 'artifacts\*.nupkg'
   deploy:
@@ -33,12 +33,12 @@
   cache: C:\Users\appveyor\.nuget\packages
   configuration: Release
   before_build:
-    - dotnet --info
-    - dotnet restore
+    - ps: dotnet --info
+    - ps: dotnet restore
   build_script:
-    - dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts
+    - ps: dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts
   test_script:
-    - dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
+    - ps: dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
   artifacts:
     - path: 'artifacts\*.nupkg'
   deploy:
