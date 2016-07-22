@@ -2,7 +2,7 @@
   branches:
     except:
       - stable
-  version: {branch}-build{build}
+  version: '{branch}-build{build}'
   skip_tags: true
   clone_depth: 1
   cache: C:\Users\appveyor\.nuget\packages
@@ -26,7 +26,7 @@
   branches:
     only:
       - stable
-  version: {branch}-build{build}
+  version: '{branch}-build{build}'
   skip_tags: true
   clone_depth: 1
   cache: C:\Users\appveyor\.nuget\packages
