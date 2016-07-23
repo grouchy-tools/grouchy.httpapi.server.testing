@@ -2,6 +2,7 @@ namespace Banshee
 {
    using System;
    using System.Net.Http;
+   using System.Text;
    using Microsoft.AspNetCore.Builder;
    using Microsoft.AspNetCore.Hosting;
    using Microsoft.AspNetCore.TestHost;
@@ -27,12 +28,14 @@ namespace Banshee
          }
       }
 
-      public HttpResponseMessage Post(string uri, string body)
+      public HttpResponseMessage Post(string uri, string body, string bodyType = "application/json")
       {
-         using (var server = CreateTestServer())
-         using (var httpClient = server.CreateClient())
+         using (var testServer = CreateTestServer())
          {
-            return httpClient.PostAsync(uri, new StringContent(body)).Result;
+            using (var client = testServer.CreateClient())
+            {
+               return client.PostAsync(uri, new StringContent(body, Encoding.UTF8, bodyType)).Result;
+            }
          }
       }
 
