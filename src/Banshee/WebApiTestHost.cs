@@ -1,6 +1,7 @@
 namespace Banshee
 {
    using System;
+   using System.Collections.Generic;
    using System.Net.Http;
    using System.Text;
    using Microsoft.AspNetCore.Builder;
@@ -19,22 +20,33 @@ namespace Banshee
          _configure = configure;
       }
 
-      public HttpResponseMessage Get(string uri)
+      public HttpResponseMessage Get(string uri, IDictionary<string, string> headers = null)
       {
          using (var server = CreateTestServer())
          using (var httpClient = server.CreateClient())
          {
-            return httpClient.GetAsync(uri).Result;
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+
+            AddHeadersToRequest(headers, request);
+
+            return httpClient.SendAsync(request).Result;
          }
       }
 
-      public HttpResponseMessage Post(string uri, string body, string bodyType = "application/json")
+      public HttpResponseMessage Post(string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
       {
          using (var testServer = CreateTestServer())
          {
             using (var client = testServer.CreateClient())
             {
-               return client.PostAsync(uri, new StringContent(body, Encoding.UTF8, bodyType)).Result;
+               var request = new HttpRequestMessage(HttpMethod.Post, uri)
+               {
+                  Content = new StringContent(body, Encoding.UTF8, bodyType)
+               };
+
+               AddHeadersToRequest(headers, request);
+
+               return client.SendAsync(request).Result;
             }
          }
       }
@@ -47,6 +59,19 @@ namespace Banshee
 
          var testServer = new TestServer(builder);
          return testServer;
+      }
+
+      private static void AddHeadersToRequest(IDictionary<string, string> headers, HttpRequestMessage request)
+      {
+         if (headers == null)
+         {
+            return;
+         }
+
+         foreach (var header in headers)
+         {
+            request.Headers.Add(header.Key, header.Value);
+         }
       }
    }
 }
