@@ -22,8 +22,15 @@ namespace Banshee
 
       public HttpResponseMessage Get(string uri, IDictionary<string, string> headers = null)
       {
-         using (var server = CreateTestServer())
-         using (var httpClient = server.CreateClient())
+         using (var testServer = CreateTestServer())
+         {
+            return Get(testServer, uri, headers);
+         }
+      }
+
+      public HttpResponseMessage Get(TestServer testServer, string uri, IDictionary<string, string> headers = null)
+      {
+         using (var httpClient = testServer.CreateClient())
          {
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
 
@@ -35,8 +42,15 @@ namespace Banshee
 
       public HttpResponseMessage Head(string uri, IDictionary<string, string> headers = null)
       {
-         using (var server = CreateTestServer())
-         using (var httpClient = server.CreateClient())
+         using (var testServer = CreateTestServer())
+         {
+            return Head(testServer, uri, headers);
+         }
+      }
+
+      public HttpResponseMessage Head(TestServer testServer, string uri, IDictionary<string, string> headers = null)
+      {
+         using (var httpClient = testServer.CreateClient())
          {
             var request = new HttpRequestMessage(HttpMethod.Head, uri);
 
@@ -50,21 +64,26 @@ namespace Banshee
       {
          using (var testServer = CreateTestServer())
          {
-            using (var client = testServer.CreateClient())
-            {
-               var request = new HttpRequestMessage(HttpMethod.Post, uri)
-               {
-                  Content = new StringContent(body, Encoding.UTF8, bodyType)
-               };
-
-               AddHeadersToRequest(headers, request);
-
-               return client.SendAsync(request).Result;
-            }
+            return Post(testServer, uri, body, headers, bodyType);
          }
       }
 
-      private TestServer CreateTestServer()
+      public HttpResponseMessage Post(TestServer testServer, string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
+      {
+         using (var client = testServer.CreateClient())
+         {
+            var request = new HttpRequestMessage(HttpMethod.Post, uri)
+            {
+               Content = new StringContent(body, Encoding.UTF8, bodyType)
+            };
+
+            AddHeadersToRequest(headers, request);
+
+            return client.SendAsync(request).Result;
+         }
+      }
+
+      public TestServer CreateTestServer()
       {
          var builder = new WebHostBuilder()
             .ConfigureServices(_configureServices)
