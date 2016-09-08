@@ -33,6 +33,19 @@ namespace Banshee
          }
       }
 
+      public HttpResponseMessage Head(string uri, IDictionary<string, string> headers = null)
+      {
+         using (var server = CreateTestServer())
+         using (var httpClient = server.CreateClient())
+         {
+            var request = new HttpRequestMessage(HttpMethod.Head, uri);
+
+            AddHeadersToRequest(headers, request);
+
+            return httpClient.SendAsync(request).Result;
+         }
+      }
+
       public HttpResponseMessage Post(string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
       {
          using (var testServer = CreateTestServer())
