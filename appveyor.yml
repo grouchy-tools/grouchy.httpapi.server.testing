@@ -19,13 +19,13 @@
     - ps: dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
   artifacts:
     - path: 'artifacts\*.nupkg'
-  deploy:
-    on:
-      configuration: Debug
-    provider: NuGet
-    api_key:
-      secure: 4eGPThK/wSpRmfINQgAGQZD/e8r6FKRfp0SN4nB5/FBTHKJ1xIf/BK3/Iz5csDFm
-    artifact: /.*\.nupkg/
+#  deploy:
+#    on:
+#      configuration: Debug
+#    provider: NuGet
+#    api_key:
+#      secure: 4eGPThK/wSpRmfINQgAGQZD/e8r6FKRfp0SN4nB5/FBTHKJ1xIf/BK3/Iz5csDFm
+#    artifact: /.*\.nupkg/
 -
   branches:
     only:
@@ -44,8 +44,8 @@
     - ps: dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
   artifacts:
     - path: 'artifacts\*.nupkg'
-  deploy:
-    provider: NuGet
-    api_key:
-      secure: 4eGPThK/wSpRmfINQgAGQZD/e8r6FKRfp0SN4nB5/FBTHKJ1xIf/BK3/Iz5csDFm
-    artifact: /.*\.nupkg/
+#  deploy:
+#    provider: NuGet
+#    api_key:
+#      secure: 4eGPThK/wSpRmfINQgAGQZD/e8r6FKRfp0SN4nB5/FBTHKJ1xIf/BK3/Iz5csDFm
+#    artifact: /.*\.nupkg/

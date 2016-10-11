@@ -1,15 +1,31 @@
 {
    "version": "0.0.1-*",
-
-   "dependencies": {
-      "Microsoft.AspNetCore.TestHost": "1.0.0",
-      "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
-      "NETStandard.Library": "1.6.0"
+   "title": "Banshee",
+   "description": "HTTP API mocking library",
+   "authors": [ "Andrew Craven" ],
+   "packOptions": {
+      "tags": [ "http", "api", "mocking", "testing" ],
+      "licenseUrl": "https://bitbucket.org/acraven/banshee/src/LICENSE",
+      "repository": {
+         "type": "git",
+         "url": "git://bitbucket.org/acraven/banshee"
+      }
    },
-
    "frameworks": {
       "netstandard1.6": {
-         "imports": "dnxcore50"
+         "dependencies": {
+            "Microsoft.AspNetCore.TestHost": "1.0.0",
+            "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
+            "System.Net.Sockets": "4.1.0"
+         }
+      },
+      "net45": {
+         "dependencies": {
+            "Microsoft.Owin.Testing": "3.0.1"
+         },
+         "frameworkAssemblies": {
+            "System.Net.Http": ""
+         }
       }
    }
 }

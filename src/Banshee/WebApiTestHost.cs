@@ -4,33 +4,49 @@ namespace Banshee
    using System.Collections.Generic;
    using System.Net.Http;
    using System.Text;
+#if NET45
+   using Microsoft.Owin.Testing;
+   using Owin;
+#else
    using Microsoft.AspNetCore.Builder;
    using Microsoft.AspNetCore.Hosting;
    using Microsoft.AspNetCore.TestHost;
    using Microsoft.Extensions.DependencyInjection;
+#endif
 
    public class WebApiTestHost
    {
+#if NET45
+      private readonly Action<IAppBuilder> _configure;
+
+      public WebApiTestHost(Action<IAppBuilder> configure)
+      {
+         _configure = configure;
+      }
+#else
       private readonly Action<IServiceCollection> _configureServices;
       private readonly Action<IApplicationBuilder> _configure;
 
-      public WebApiTestHost(Action<IServiceCollection> configureServices, Action<IApplicationBuilder> configure)
+      public WebApiTestHost(
+         Action<IServiceCollection> configureServices,
+         Action<IApplicationBuilder> configure)
       {
          _configureServices = configureServices;
          _configure = configure;
       }
+#endif
 
       public HttpResponseMessage Get(string uri, IDictionary<string, string> headers = null)
       {
-         using (var testServer = CreateTestServer())
+         using (var fakeServer = CreateFakeServer())
          {
-            return Get(testServer, uri, headers);
+            return Get(fakeServer, uri, headers);
          }
       }
 
-      public HttpResponseMessage Get(TestServer testServer, string uri, IDictionary<string, string> headers = null)
+      public HttpResponseMessage Get(FakeServer fakeServer, string uri, IDictionary<string, string> headers = null)
       {
-         using (var httpClient = testServer.CreateClient())
+         using (var httpClient = fakeServer.CreateClient())
          {
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
 
@@ -42,15 +58,15 @@ namespace Banshee
 
       public HttpResponseMessage Head(string uri, IDictionary<string, string> headers = null)
       {
-         using (var testServer = CreateTestServer())
+         using (var fakeServer = CreateFakeServer())
          {
-            return Head(testServer, uri, headers);
+            return Head(fakeServer, uri, headers);
          }
       }
 
-      public HttpResponseMessage Head(TestServer testServer, string uri, IDictionary<string, string> headers = null)
+      public HttpResponseMessage Head(FakeServer fakeServer, string uri, IDictionary<string, string> headers = null)
       {
-         using (var httpClient = testServer.CreateClient())
+         using (var httpClient = fakeServer.CreateClient())
          {
             var request = new HttpRequestMessage(HttpMethod.Head, uri);
 
@@ -62,15 +78,15 @@ namespace Banshee
 
       public HttpResponseMessage Post(string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
       {
-         using (var testServer = CreateTestServer())
+         using (var fakeServer = CreateFakeServer())
          {
-            return Post(testServer, uri, body, headers, bodyType);
+            return Post(fakeServer, uri, body, headers, bodyType);
          }
       }
 
-      public HttpResponseMessage Post(TestServer testServer, string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
+      public HttpResponseMessage Post(FakeServer fakeServer, string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
       {
-         using (var client = testServer.CreateClient())
+         using (var client = fakeServer.CreateClient())
          {
             var request = new HttpRequestMessage(HttpMethod.Post, uri)
             {
@@ -83,14 +99,19 @@ namespace Banshee
          }
       }
 
-      public TestServer CreateTestServer()
+      public FakeServer CreateFakeServer()
       {
+#if NET45
+         var fakeServer = new FakeServer(TestServer.Create(_configure));
+         return fakeServer;
+#else
          var builder = new WebHostBuilder()
             .ConfigureServices(_configureServices)
             .Configure(_configure);
 
-         var testServer = new TestServer(builder);
-         return testServer;
+         var fakeServer = new FakeServer(new TestServer(builder));
+         return fakeServer;
+#endif
       }
 
       private static void AddHeadersToRequest(IDictionary<string, string> headers, HttpRequestMessage request)
