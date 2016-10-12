@@ -22,8 +22,8 @@ task Clean {
 task Build {
    exec { dotnet --version }
    exec { dotnet restore $ProjectJsonPath }
-   exec { dotnet build $ProjectJsonPath -c $Configuration --no-incremental -f netstandard1.6 }
-   exec { dotnet build $ProjectJsonPath -c $Configuration --no-incremental -f net451 }
+   exec { dotnet build $ProjectJsonPath -c $Configuration -f netstandard1.6 --no-incremental --version-suffix $VersionSuffix }
+   exec { dotnet build $ProjectJsonPath -c $Configuration -f net451 --no-incremental --version-suffix $VersionSuffix }
 }
 
 task Test -depends Build {
@@ -33,10 +33,5 @@ task Test -depends Build {
 }
 
 task Package -depends Build {
-   if ($VersionSuffix -eq $null -or $VersionSuffix -eq "") {
-      exec { dotnet pack $ProjectJsonPath -c $Configuration -o $ArtifactsPath }
-   }
-   else {
-      exec { dotnet pack $ProjectJsonPath -c $Configuration -o $ArtifactsPath --version-suffix $VersionSuffix }
-   }
+   exec { dotnet pack $ProjectJsonPath -c $Configuration -o $ArtifactsPath --version-suffix $VersionSuffix }
 }
