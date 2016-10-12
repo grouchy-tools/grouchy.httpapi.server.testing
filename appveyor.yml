@@ -10,13 +10,11 @@
     - Debug
     - Release
   before_build:
-    - ps: dotnet --info
-    - ps: dotnet restore
+    - ps: Import-Module .\build\psake.psm1
     - ps: $env:VERSION_SUFFIX = 'build' + "$env:APPVEYOR_BUILD_NUMBER".PadLeft(4, "0")
   build_script:
-    - ps: dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts --version-suffix $env:VERSION_SUFFIX
-  test_script:
-    - ps: dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
+    - ps: Invoke-Psake .\build\build.ps1 -properties @{"Configuration"=$env:CONFIGURATION;"VersionSuffix"=$env:VERSION_SUFFIX}
+  test: off
   artifacts:
     - path: 'artifacts\*.nupkg'
 #  deploy:
@@ -36,12 +34,10 @@
   cache: C:\Users\appveyor\.nuget\packages
   configuration: Release
   before_build:
-    - ps: dotnet --info
-    - ps: dotnet restore
+    - ps: Import-Module .\build\psake.psm1
   build_script:
-    - ps: dotnet pack src\Banshee\project.json -c $env:CONFIGURATION -o artifacts
-  test_script:
-    - ps: dotnet test src\Banshee.Tests\project.json -c $env:CONFIGURATION
+    - ps: Invoke-Psake .\build\build.ps1 -properties @{"Configuration"=$env:CONFIGURATION}
+  test: off
   artifacts:
     - path: 'artifacts\*.nupkg'
 #  deploy:
