@@ -5,6 +5,7 @@
    using System.Threading.Tasks;
    using Banshee;
    using NUnit.Framework;
+   using Shouldly;
 #if NET451
    using Microsoft.Owin;
 #else
@@ -24,7 +25,7 @@
 
             var content = response.Content.ReadAsStringAsync().Result;
 
-            Assert.AreEqual("pong", content);
+            content.ShouldBe("pong");
          }
       }
 
