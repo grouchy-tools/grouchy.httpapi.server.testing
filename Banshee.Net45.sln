@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Net45", "src\Banshee\Banshee.Net45.csproj", "{F499A468-910A-445F-9C24-5B230D0A046A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Tests.Net451", "src\Banshee.Tests\Banshee.Tests.Net451.csproj", "{291E99D3-FB4D-48A1-A9D9-9AEB03FEF13B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Net451", "src\Banshee\Banshee.Net451.csproj", "{F499A468-910A-445F-9C24-5B230D0A046A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{291E99D3-FB4D-48A1-A9D9-9AEB03FEF13B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{291E99D3-FB4D-48A1-A9D9-9AEB03FEF13B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{291E99D3-FB4D-48A1-A9D9-9AEB03FEF13B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{291E99D3-FB4D-48A1-A9D9-9AEB03FEF13B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F499A468-910A-445F-9C24-5B230D0A046A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F499A468-910A-445F-9C24-5B230D0A046A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F499A468-910A-445F-9C24-5B230D0A046A}.Release|Any CPU.ActiveCfg = Release|Any CPU

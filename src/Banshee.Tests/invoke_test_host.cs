@@ -1,49 +1,60 @@
-﻿namespace Banshee.Tests
-{
-   using System.Net;
-   using System.Net.Http;
-   using Xunit;
-   using Banshee;
-   using Microsoft.AspNetCore.Builder;
-   using Microsoft.AspNetCore.Http;
+﻿//namespace Banshee.Tests
+//{
+//   using System.Net;
+//   using System.Net.Http;
+//   using Xunit;
+//   using Banshee;
 
-   public class invoke_test_host
-   {
-      private readonly HttpResponseMessage _response;
+//#if NET451
+//   using Owin;
+//#else
+//   using Microsoft.AspNetCore.Builder;
+//   using Microsoft.AspNetCore.Http;
+//#endif
 
-      public invoke_test_host()
-      {
-         var apiHarness = new WebApiTestHost(
-            services => { },
-            Configure);
+//   public class invoke_test_host
+//   {
+//      private readonly HttpResponseMessage _response;
 
-         _response = apiHarness.Get("/ping");
-      }
+//      public invoke_test_host()
+//      {
+//         var apiHarness = new WebApiTestHost(
+//#if !NET451
+//            services => { },
+//#endif
+//            Configure);
 
-      [Fact]
-      public void should_return_status_code_200()
-      {
-         Assert.Equal(_response.StatusCode, HttpStatusCode.OK);
-      }
+//         _response = apiHarness.Get("/ping");
+//      }
 
-      [Fact]
-      public void should_return_content_pong()
-      {
-         var content = _response.Content.ReadAsStringAsync().Result;
+//      [Fact]
+//      public void should_return_status_code_200()
+//      {
+//         Assert.Equal(HttpStatusCode.OK, _response.StatusCode);
+//      }
 
-         Assert.Equal(content, "!pong!");
-      }
+//      [Fact]
+//      public void should_return_content_pong()
+//      {
+//         var content = _response.Content.ReadAsStringAsync().Result;
 
-      private void Configure(IApplicationBuilder app)
-      {
-         app.Map("/ping", builder =>
-         {
-            app.Run(async context =>
-            {
-               context.Response.StatusCode = (int) HttpStatusCode.OK;
-               await context.Response.WriteAsync("!pong!");
-            });
-         });
-      }
-   }
-}
+//         Assert.Equal("!pong!", content);
+//      }
+
+//#if NET451
+//      private void Configure(IAppBuilder app)
+//#else
+//      private void Configure(IApplicationBuilder app)
+//#endif
+//      {
+//         app.Map("/ping", builder =>
+//         {
+//            app.Run(async context =>
+//            {
+//               context.Response.StatusCode = (int) HttpStatusCode.OK;
+//               await context.Response.WriteAsync("!pong!");
+//            });
+//         });
+//      }
+//   }
+//}

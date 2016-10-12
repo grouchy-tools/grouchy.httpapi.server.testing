@@ -4,7 +4,7 @@
    using System.Net;
    using System.Net.Sockets;
    using System.Threading.Tasks;
-#if NET45
+#if NET451
    using Microsoft.Owin;
    using Microsoft.Owin.Hosting;
    using Owin;
@@ -14,14 +14,14 @@
    using Microsoft.AspNetCore.Http;
 #endif
 
-   public class FakeWebApi : IDisposable
+   public class StubWebApiHost : IDisposable
    {
       private readonly Uri _baseUri;
-      private readonly IDisposable _testServer;
+      private readonly IDisposable _server;
 
       private bool _disposed;
 
-      public FakeWebApi(int port = 0)
+      public StubWebApiHost(int port = 0)
       {
          if (port == 0)
          {
@@ -29,10 +29,10 @@
          }
 
          _baseUri = new Uri($"http://localhost:{port}/");
-         _testServer = CreateTestServer();
+         _server = CreateServer();
       }
 
-      ~FakeWebApi()
+      ~StubWebApiHost()
       {
          Dispose(false);
       }
@@ -56,11 +56,11 @@
          return port;
       }
 
-      private IDisposable CreateTestServer()
+      private IDisposable CreateServer()
       {
-#if NET45
-         var testServer = WebApp.Start(_baseUri.ToString(), app => { app.Run(Handler); });
-         return testServer;
+#if NET451
+         var server = WebApp.Start(_baseUri.ToString(), app => { app.Run(Handler); });
+         return server;
 #else
          var builder = new WebHostBuilder()
             .UseKestrel()
@@ -70,14 +70,14 @@
                app.Run(Handler);
             });
 
-         var testServer = builder.Build();
-         testServer.Start();
+         var server = builder.Build();
+         server.Start();
 
-         return testServer;
+         return server;
 #endif
       }
 
-#if NET45
+#if NET451
       protected virtual Task Handler(IOwinContext context)
       {
          context.Response.StatusCode = (int)HttpStatusCode.NotFound;
@@ -100,7 +100,7 @@
 
          if (disposing)
          {
-            _testServer.Dispose();
+            _server.Dispose();
          }
 
          _disposed = true;

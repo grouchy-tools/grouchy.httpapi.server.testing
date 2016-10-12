@@ -1,59 +1,69 @@
-﻿namespace Banshee.Tests
-{
-   using System.Collections.Generic;
-   using System.Net;
-   using System.Net.Http;
-   using System.Runtime.InteropServices;
-   using System.Text;
-   using Xunit;
-   using Banshee;
-   using Microsoft.AspNetCore.Builder;
-   using Microsoft.AspNetCore.Http;
+﻿//namespace Banshee.Tests
+//{
+//   using System.Collections.Generic;
+//   using System.Net;
+//   using System.Net.Http;
+//   using System.Runtime.InteropServices;
+//   using System.Text;
+//   using Xunit;
+//   using Banshee;
+//#if NET451
+//   using Owin;
+//#else
+//   using Microsoft.AspNetCore.Builder;
+//   using Microsoft.AspNetCore.Http;
+//#endif
 
-   public class invoke_get_with_headers
-   {
-      private readonly HttpResponseMessage _response;
+//   public class invoke_get_with_headers
+//   {
+//      private readonly HttpResponseMessage _response;
 
-      public invoke_get_with_headers()
-      {
-         var apiHarness = new WebApiTestHost(
-            services => { },
-            Configure);
+//      public invoke_get_with_headers()
+//      {
+//         var apiHarness = new WebApiTestHost(
+//#if !NET451
+//            services => { },
+//#endif
+//            Configure);
 
-         _response = apiHarness.Get("/ping", new Dictionary<string, string> { { "abc", "123" }, { "xyz", "example.com" } });
-      }
+//         _response = apiHarness.Get("/ping", new Dictionary<string, string> { { "abc", "123" }, { "xyz", "example.com" } });
+//      }
 
-      [Fact]
-      public void should_return_status_code_200()
-      {
-         Assert.Equal(_response.StatusCode, HttpStatusCode.OK);
-      }
+//      [Fact]
+//      public void should_return_status_code_200()
+//      {
+//         Assert.Equal(_response.StatusCode, HttpStatusCode.OK);
+//      }
 
-      [Fact]
-      public void should_return_content_from_headers()
-      {
-         var content = _response.Content.ReadAsStringAsync().Result;
+//      [Fact]
+//      public void should_return_content_from_headers()
+//      {
+//         var content = _response.Content.ReadAsStringAsync().Result;
 
-         Assert.Equal(content, "abc=123;xyz=example.com;Host=localhost;");
-      }
+//         Assert.Equal(content, "abc=123;xyz=example.com;Host=localhost;");
+//      }
 
-      private void Configure(IApplicationBuilder app)
-      {
-         app.Map("/ping", builder =>
-         {
-            app.Run(async context =>
-            {
-               context.Response.StatusCode = (int)HttpStatusCode.OK;
+//#if NET451
+//      private void Configure(IAppBuilder app)
+//#else
+//      private void Configure(IApplicationBuilder app)
+//#endif
+//      {
+//         app.Map("/ping", builder =>
+//         {
+//            app.Run(async context =>
+//            {
+//               context.Response.StatusCode = (int)HttpStatusCode.OK;
 
-               var response = new StringBuilder();
-               foreach (var header in context.Request.Headers)
-               {
-                  response.Append($"{header.Key}={header.Value[0]};");
-               }
+//               var response = new StringBuilder();
+//               foreach (var header in context.Request.Headers)
+//               {
+//                  response.Append($"{header.Key}={header.Value[0]};");
+//               }
 
-               await context.Response.WriteAsync(response.ToString());
-            });
-         });
-      }
-   }
-}
+//               await context.Response.WriteAsync(response.ToString());
+//            });
+//         });
+//      }
+//   }
+//}

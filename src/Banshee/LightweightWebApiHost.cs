@@ -4,7 +4,7 @@ namespace Banshee
    using System.Collections.Generic;
    using System.Net.Http;
    using System.Text;
-#if NET45
+#if NET451
    using Microsoft.Owin.Testing;
    using Owin;
 #else
@@ -14,12 +14,12 @@ namespace Banshee
    using Microsoft.Extensions.DependencyInjection;
 #endif
 
-   public class WebApiTestHost
+   public class LightweightWebApiHost
    {
-#if NET45
+#if NET451
       private readonly Action<IAppBuilder> _configure;
 
-      public WebApiTestHost(Action<IAppBuilder> configure)
+      public LightweightWebApiHost(Action<IAppBuilder> configure)
       {
          _configure = configure;
       }
@@ -27,7 +27,7 @@ namespace Banshee
       private readonly Action<IServiceCollection> _configureServices;
       private readonly Action<IApplicationBuilder> _configure;
 
-      public WebApiTestHost(
+      public LightweightWebApiHost(
          Action<IServiceCollection> configureServices,
          Action<IApplicationBuilder> configure)
       {
@@ -38,15 +38,15 @@ namespace Banshee
 
       public HttpResponseMessage Get(string uri, IDictionary<string, string> headers = null)
       {
-         using (var fakeServer = CreateFakeServer())
+         using (var fakeServer = CreateServer())
          {
             return Get(fakeServer, uri, headers);
          }
       }
 
-      public HttpResponseMessage Get(FakeServer fakeServer, string uri, IDictionary<string, string> headers = null)
+      public HttpResponseMessage Get(Server server, string uri, IDictionary<string, string> headers = null)
       {
-         using (var httpClient = fakeServer.CreateClient())
+         using (var httpClient = server.CreateClient())
          {
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
 
@@ -58,15 +58,15 @@ namespace Banshee
 
       public HttpResponseMessage Head(string uri, IDictionary<string, string> headers = null)
       {
-         using (var fakeServer = CreateFakeServer())
+         using (var fakeServer = CreateServer())
          {
             return Head(fakeServer, uri, headers);
          }
       }
 
-      public HttpResponseMessage Head(FakeServer fakeServer, string uri, IDictionary<string, string> headers = null)
+      public HttpResponseMessage Head(Server server, string uri, IDictionary<string, string> headers = null)
       {
-         using (var httpClient = fakeServer.CreateClient())
+         using (var httpClient = server.CreateClient())
          {
             var request = new HttpRequestMessage(HttpMethod.Head, uri);
 
@@ -78,15 +78,15 @@ namespace Banshee
 
       public HttpResponseMessage Post(string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
       {
-         using (var fakeServer = CreateFakeServer())
+         using (var fakeServer = CreateServer())
          {
             return Post(fakeServer, uri, body, headers, bodyType);
          }
       }
 
-      public HttpResponseMessage Post(FakeServer fakeServer, string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
+      public HttpResponseMessage Post(Server server, string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
       {
-         using (var client = fakeServer.CreateClient())
+         using (var client = server.CreateClient())
          {
             var request = new HttpRequestMessage(HttpMethod.Post, uri)
             {
@@ -99,18 +99,18 @@ namespace Banshee
          }
       }
 
-      public FakeServer CreateFakeServer()
+      public Server CreateServer()
       {
-#if NET45
-         var fakeServer = new FakeServer(TestServer.Create(_configure));
-         return fakeServer;
+#if NET451
+         var server = new Server(TestServer.Create(_configure));
+         return server;
 #else
          var builder = new WebHostBuilder()
             .ConfigureServices(_configureServices)
             .Configure(_configure);
 
-         var fakeServer = new FakeServer(new TestServer(builder));
-         return fakeServer;
+         var server = new Server(new TestServer(builder));
+         return server;
 #endif
       }
 
@@ -124,6 +124,56 @@ namespace Banshee
          foreach (var header in headers)
          {
             request.Headers.Add(header.Key, header.Value);
+         }
+      }
+
+      public class Server : IDisposable
+      {
+         private readonly TestServer _testServer;
+
+         private bool _disposed;
+
+         internal Server(TestServer testServer)
+         {
+            _testServer = testServer;
+         }
+
+         ~Server()
+         {
+            Dispose(false);
+         }
+
+#if NET451
+         public HttpClient CreateClient()
+         {
+            return _testServer.HttpClient;
+         }
+#else
+         public HttpClient CreateClient()
+         {
+            return _testServer.CreateClient();
+         }
+#endif
+
+         public void Dispose()
+         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+         }
+
+         protected virtual void Dispose(bool disposing)
+         {
+            if (_disposed)
+            {
+               return;
+            }
+
+            if (disposing)
+            {
+               _testServer.Dispose();
+            }
+
+            _disposed = true;
          }
       }
    }

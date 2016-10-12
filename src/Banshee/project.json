@@ -19,12 +19,13 @@
             "System.Net.Sockets": "4.1.0"
          }
       },
-      "net45": {
+      "net451": {
          "dependencies": {
             "Microsoft.Owin.Testing": "3.0.1"
          },
          "frameworkAssemblies": {
-            "System.Net.Http": ""
+            "System.Net.Http": "",
+            "System.Runtime":  ""
          }
       }
    }
