@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net451;netstandard2.0</TargetFrameworks>
+    <Product>Banshee</Product>
+    <Title>Banshee</Title>
+    <Description>HTTP API mocking library</Description>
+    <Authors>Andrew Craven</Authors>
+    <RootNamespace>Banshee</RootNamespace>
+    <AssemblyName>Banshee</AssemblyName>
+    <VersionPrefix>0.0.3</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>Banshee</PackageId>
+    <PackageTags>http;api;mocking;testing</PackageTags>
+    <PackageLicenseUrl>https://bitbucket.org/acraven/banshee/src/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>git://bitbucket.org/acraven/banshee</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+    <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+    <PackageReference Include="Microsoft.Owin.Testing" Version="3.0.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.3" />
+    <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
+  </ItemGroup>
+</Project>

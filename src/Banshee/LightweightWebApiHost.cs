@@ -1,9 +1,8 @@
-namespace Banshee
-{
-   using System;
-   using System.Collections.Generic;
-   using System.Net.Http;
-   using System.Text;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+
 #if NET451
    using Microsoft.Owin.Testing;
    using Owin;
@@ -14,6 +13,8 @@ namespace Banshee
    using Microsoft.Extensions.DependencyInjection;
 #endif
 
+namespace Banshee
+{
    public class LightweightWebApiHost
    {
 #if NET451

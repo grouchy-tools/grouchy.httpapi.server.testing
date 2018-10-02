@@ -1,9 +1,8 @@
-﻿namespace Banshee
-{
-   using System;
-   using System.Net;
-   using System.Net.Sockets;
-   using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
+
 #if NET451
    using Microsoft.Owin;
    using Microsoft.Owin.Hosting;
@@ -14,6 +13,8 @@
    using Microsoft.AspNetCore.Http;
 #endif
 
+namespace Banshee
+{
    public class StubWebApiHost : IDisposable
    {
       private readonly Uri _baseUri;

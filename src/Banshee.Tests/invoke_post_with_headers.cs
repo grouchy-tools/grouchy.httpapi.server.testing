@@ -1,12 +1,12 @@
-﻿namespace Banshee.Tests
-{
-   using System.Collections.Generic;
-   using System.Net;
-   using System.Net.Http;
-   using System.Text;
-   using Banshee;
-   using NUnit.Framework;
-   using Shouldly;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Banshee;
+using NUnit.Framework;
+using Shouldly;
+
 #if NET451
    using Owin;
 #else
@@ -14,6 +14,8 @@
    using Microsoft.AspNetCore.Http;
 #endif
 
+namespace Banshee.Tests
+{
    public class invoke_post_with_headers
    {
       private readonly HttpResponseMessage _response;
@@ -36,11 +38,13 @@
       }
 
       [Test]
-      public void should_return_content_from_headers()
+      public async Task should_return_content_from_headers()
       {
-         var content = _response.Content.ReadAsStringAsync().Result;
+         var content = await _response.Content.ReadAsStringAsync();
 
-         content.ShouldBe("post=true;xyz=example.com;Host=localhost;Content-Type=application/json; charset=utf-8;");
+         var foo = content.Split(';');
+         
+         foo.ShouldBe(new[] {"post=true","xyz=example.com","Host=localhost","Content-Type=application/json"," charset=utf-8", ""}, ignoreOrder: true);
       }
 
 #if NET451

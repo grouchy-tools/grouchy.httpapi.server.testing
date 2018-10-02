@@ -1,17 +1,18 @@
-﻿namespace Banshee.Tests
-{
-   using System.Net;
-   using System.Net.Http;
-   using System.Threading.Tasks;
-   using Banshee;
-   using NUnit.Framework;
-   using Shouldly;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Banshee;
+using NUnit.Framework;
+using Shouldly;
+
 #if NET451
    using Microsoft.Owin;
 #else
    using Microsoft.AspNetCore.Http;
 #endif
 
+namespace Banshee.Tests
+{
    public class handle_request_with_stub_web_api_host
    {
       [Test]

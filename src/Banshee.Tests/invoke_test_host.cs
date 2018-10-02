@@ -1,10 +1,9 @@
-﻿namespace Banshee.Tests
-{
-   using System.Net;
-   using System.Net.Http;
-   using Banshee;
-   using NUnit.Framework;
-   using Shouldly;
+﻿using System.Net;
+using System.Net.Http;
+using Banshee;
+using NUnit.Framework;
+using Shouldly;
+
 #if NET451
    using Owin;
 #else
@@ -12,6 +11,8 @@
    using Microsoft.AspNetCore.Http;
 #endif
 
+namespace Banshee.Tests
+{
    public class invoke_test_host
    {
       private readonly HttpResponseMessage _response;
