@@ -10,6 +10,7 @@
     <VersionPrefix>0.0.3</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Banshee</PackageId>
