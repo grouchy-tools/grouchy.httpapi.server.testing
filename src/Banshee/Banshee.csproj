@@ -10,7 +10,6 @@
     <VersionPrefix>0.0.3</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Banshee</PackageId>
@@ -30,5 +29,6 @@
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.3" />
     <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.3" />
   </ItemGroup>
 </Project>
