@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Banshee;
 using NUnit.Framework;
 using Shouldly;
 
@@ -16,15 +15,15 @@ namespace Banshee.Tests
    public class handle_request_with_stub_web_api_host
    {
       [Test]
-      public void simple_get_request()
+      public async Task simple_get_request()
       {
          using (var webApi = new PingWebApi())
          using (var httpClient = new HttpClient { BaseAddress = webApi.BaseUri })
          {
-            var response = httpClient.GetAsync("/ping").Result;
+            var response = await httpClient.GetAsync("/ping");
             response.EnsureSuccessStatusCode();
 
-            var content = response.Content.ReadAsStringAsync().Result;
+            var content = await response.Content.ReadAsStringAsync();
 
             content.ShouldBe("pong");
          }

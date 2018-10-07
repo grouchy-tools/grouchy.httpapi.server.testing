@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
-using Banshee;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Shouldly;
 
@@ -15,9 +15,10 @@ namespace Banshee.Tests
 {
    public class invoke_test_host
    {
-      private readonly HttpResponseMessage _response;
+      private HttpResponseMessage _response;
 
-      public invoke_test_host()
+      [OneTimeSetUp]
+      public async Task setup_scenario()
       {
          var apiHarness = new LightweightWebApiHost(
 #if !NET451
@@ -25,7 +26,7 @@ namespace Banshee.Tests
 #endif
             Configure);
 
-         _response = apiHarness.Get("/ping");
+         _response = await apiHarness.GetAsync("/ping");
       }
 
       [Test]
@@ -35,9 +36,9 @@ namespace Banshee.Tests
       }
 
       [Test]
-      public void should_return_content_pong()
+      public async Task should_return_content_pong()
       {
-         var content = _response.Content.ReadAsStringAsync().Result;
+         var content = await _response.Content.ReadAsStringAsync();
 
          content.ShouldBe("!pong!");
       }

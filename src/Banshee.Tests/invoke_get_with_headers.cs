@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Banshee;
 using NUnit.Framework;
 using Shouldly;
 
@@ -18,9 +17,10 @@ namespace Banshee.Tests
 {
    public class invoke_get_with_headers
    {
-      private readonly HttpResponseMessage _response;
+      private HttpResponseMessage _response;
 
-      public invoke_get_with_headers()
+      [OneTimeSetUp]
+      public async Task setup_scenario()
       {
          var apiHarness = new LightweightWebApiHost(
 #if !NET451
@@ -28,7 +28,7 @@ namespace Banshee.Tests
 #endif
             Configure);
 
-         _response = apiHarness.Get("/ping", new Dictionary<string, string> { { "abc", "123" }, { "xyz", "example.com" } });
+         _response = await apiHarness.GetAsync("/ping", new Dictionary<string, string> { { "abc", "123" }, { "xyz", "example.com" } });
       }
 
       [Test]

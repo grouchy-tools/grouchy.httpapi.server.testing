@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-
+using System.Threading.Tasks;
 #if NET451
    using Microsoft.Owin.Testing;
    using Owin;
@@ -37,15 +37,15 @@ namespace Banshee
       }
 #endif
 
-      public HttpResponseMessage Get(string uri, IDictionary<string, string> headers = null)
+      public async Task<HttpResponseMessage> GetAsync(string uri, IDictionary<string, string> headers = null)
       {
          using (var fakeServer = CreateServer())
          {
-            return Get(fakeServer, uri, headers);
+            return await GetAsync(fakeServer, uri, headers);
          }
       }
 
-      public HttpResponseMessage Get(Server server, string uri, IDictionary<string, string> headers = null)
+      public async Task<HttpResponseMessage> GetAsync(Server server, string uri, IDictionary<string, string> headers = null)
       {
          using (var httpClient = server.CreateClient())
          {
@@ -53,19 +53,19 @@ namespace Banshee
 
             AddHeadersToRequest(headers, request);
 
-            return httpClient.SendAsync(request).Result;
+            return await httpClient.SendAsync(request);
          }
       }
 
-      public HttpResponseMessage Head(string uri, IDictionary<string, string> headers = null)
+      public async Task<HttpResponseMessage> HeadAsync(string uri, IDictionary<string, string> headers = null)
       {
          using (var fakeServer = CreateServer())
          {
-            return Head(fakeServer, uri, headers);
+            return await HeadAsync(fakeServer, uri, headers);
          }
       }
 
-      public HttpResponseMessage Head(Server server, string uri, IDictionary<string, string> headers = null)
+      public async Task<HttpResponseMessage> HeadAsync(Server server, string uri, IDictionary<string, string> headers = null)
       {
          using (var httpClient = server.CreateClient())
          {
@@ -73,19 +73,19 @@ namespace Banshee
 
             AddHeadersToRequest(headers, request);
 
-            return httpClient.SendAsync(request).Result;
+            return await httpClient.SendAsync(request);
          }
       }
 
-      public HttpResponseMessage Post(string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
+      public async Task<HttpResponseMessage> PostAsync(string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
       {
          using (var fakeServer = CreateServer())
          {
-            return Post(fakeServer, uri, body, headers, bodyType);
+            return await PostAsync(fakeServer, uri, body, headers, bodyType);
          }
       }
 
-      public HttpResponseMessage Post(Server server, string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
+      public async Task<HttpResponseMessage> PostAsync(Server server, string uri, string body, IDictionary<string, string> headers = null, string bodyType = "application/json")
       {
          using (var client = server.CreateClient())
          {
@@ -96,7 +96,7 @@ namespace Banshee
 
             AddHeadersToRequest(headers, request);
 
-            return client.SendAsync(request).Result;
+            return await client.SendAsync(request);
          }
       }
 

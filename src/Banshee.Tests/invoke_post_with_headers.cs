@@ -18,9 +18,10 @@ namespace Banshee.Tests
 {
    public class invoke_post_with_headers
    {
-      private readonly HttpResponseMessage _response;
+      private HttpResponseMessage _response;
 
-      public invoke_post_with_headers()
+      [OneTimeSetUp]
+      public async Task setup_scenario()
       {
          var apiHarness = new LightweightWebApiHost(
 #if !NET451
@@ -28,7 +29,7 @@ namespace Banshee.Tests
 #endif
             Configure);
 
-         _response = apiHarness.Post("/ping", "{}", new Dictionary<string, string> { { "post", "true" }, { "xyz", "example.com" } });
+         _response = await apiHarness.PostAsync("/ping", "{}", new Dictionary<string, string> { { "post", "true" }, { "xyz", "example.com" } });
       }
 
       [Test]
