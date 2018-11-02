@@ -13,7 +13,7 @@ using Shouldly;
    using Microsoft.AspNetCore.Http;
 #endif
 
-namespace Banshee.Tests
+namespace Grouchy.HttpApi.Server.Testing.Tests
 {
    public class invoke_get_with_headers
    {
@@ -22,7 +22,7 @@ namespace Banshee.Tests
       [OneTimeSetUp]
       public async Task setup_scenario()
       {
-         var apiHarness = new LightweightWebApiHost(
+         var apiHarness = new LightweightHttpApiHost(
 #if !NET451
             services => { },
 #endif

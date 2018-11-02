@@ -3,8 +3,8 @@ properties {
    $BasePath = Resolve-Path ..
    $SrcPath = "$BasePath\src"
    $ArtifactsPath = "$BasePath\artifacts"
-   $ProjectPath = "$SrcPath\Banshee\Banshee.csproj"
-   $TestProjectPath = "$SrcPath\Banshee.Tests\Banshee.Tests.csproj"
+   $ProjectPath = "$SrcPath\Grouchy.HttpApi.Server.Testing\Grouchy.HttpApi.Server.Testing.csproj"
+   $TestProjectPath = "$SrcPath\Grouchy.HttpApi.Server.Testing.Tests\Grouchy.HttpApi.Server.Testing.Tests.csproj"
    $Configuration = if ($Configuration) {$Configuration} else { "Debug" }
 }
 

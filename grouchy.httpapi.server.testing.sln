@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee", "src\Banshee\Banshee.csproj", "{96B77DA8-4BC0-4BDC-A436-B22192715FED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grouchy.HttpApi.Server.Testing", "src\Grouchy.HttpApi.Server.Testing\Grouchy.HttpApi.Server.Testing.csproj", "{96B77DA8-4BC0-4BDC-A436-B22192715FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Tests", "src\Banshee.Tests\Banshee.Tests.csproj", "{041E4AF7-CAAE-475F-98AF-F74D3CBA4497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grouchy.HttpApi.Server.Testing.Tests", "src\Grouchy.HttpApi.Server.Testing.Tests\Grouchy.HttpApi.Server.Testing.Tests.csproj", "{041E4AF7-CAAE-475F-98AF-F74D3CBA4497}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F1C4D04F-D2AB-4120-BE00-96D17A24D512}"
+ProjectSection(SolutionItems) = preProject
+	LICENSE = LICENSE
+	appveyor.yml = appveyor.yml
+	.gitignore = .gitignore
+	.gitattributes = .gitattributes
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

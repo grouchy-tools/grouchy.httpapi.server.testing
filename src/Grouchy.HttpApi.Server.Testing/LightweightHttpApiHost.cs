@@ -13,9 +13,9 @@ using System.Threading.Tasks;
    using Microsoft.Extensions.DependencyInjection;
 #endif
 
-namespace Banshee
+namespace Grouchy.HttpApi.Server.Testing
 {
-   public class LightweightWebApiHost
+   public class LightweightHttpApiHost
    {
 #if NET451
       private readonly Action<IAppBuilder> _configure;
@@ -28,7 +28,7 @@ namespace Banshee
       private readonly Action<IServiceCollection> _configureServices;
       private readonly Action<IApplicationBuilder> _configure;
 
-      public LightweightWebApiHost(
+      public LightweightHttpApiHost(
          Action<IServiceCollection> configureServices,
          Action<IApplicationBuilder> configure)
       {
@@ -144,17 +144,14 @@ namespace Banshee
             Dispose(false);
          }
 
+         public HttpClient CreateClient()
+         {
 #if NET451
-         public HttpClient CreateClient()
-         {
             return _testServer.HttpClient;
-         }
 #else
-         public HttpClient CreateClient()
-         {
             return _testServer.CreateClient();
-         }
 #endif
+         }
 
          public void Dispose()
          {

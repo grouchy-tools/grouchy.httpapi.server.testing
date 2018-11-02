@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Banshee;
 using NUnit.Framework;
 using Shouldly;
 
@@ -14,7 +13,7 @@ using Shouldly;
    using Microsoft.AspNetCore.Http;
 #endif
 
-namespace Banshee.Tests
+namespace Grouchy.HttpApi.Server.Testing.Tests
 {
    public class invoke_post_with_headers
    {
@@ -23,7 +22,7 @@ namespace Banshee.Tests
       [OneTimeSetUp]
       public async Task setup_scenario()
       {
-         var apiHarness = new LightweightWebApiHost(
+         var apiHarness = new LightweightHttpApiHost(
 #if !NET451
             services => { },
 #endif
