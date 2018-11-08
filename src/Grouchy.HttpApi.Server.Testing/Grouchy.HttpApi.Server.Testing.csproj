@@ -32,4 +32,7 @@
     <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Grouchy.HttpApi.Server.Abstractions" Version="0.0.1-preview0001" />
+  </ItemGroup>
 </Project>
